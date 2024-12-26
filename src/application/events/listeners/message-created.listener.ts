@@ -3,16 +3,16 @@ import { AutoResponseUseCase } from "../../use-cases/message-use-cases/auto-resp
 import { messageEvents } from "../message-events";
 
 export function setupMessageCreatedListener(
-  autoResponseUseCase: AutoResponseUseCase
-): void {
-  messageEvents.on("messageCreated", async (messageData: CreateMessageDTO) => {
-    try {
-      const isAutoResponseRequired = true;
-      if (isAutoResponseRequired) {
-        await autoResponseUseCase.execute(messageData);
+    autoResponseUseCase: AutoResponseUseCase
+  ): void {
+    messageEvents.on("messageCreated", async (messageData: CreateMessageDTO) => {
+      try {
+        const isAutoResponseRequired = !messageData.isAutoResponse;
+        if (isAutoResponseRequired) {
+          await autoResponseUseCase.execute(messageData);
+        }
+      } catch (error) {
+        console.error("Failed to generate auto-response:", error);
       }
-    } catch (error) {
-      console.error("Failed to generate auto-response:", error);
-    }
-  });
-}
+    });
+  }

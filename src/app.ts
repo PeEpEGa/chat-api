@@ -5,6 +5,7 @@ import authRouter from "./infrastructure/routes/auth/auth.route";
 import chatRouter from "./infrastructure/routes/chat/chats-route";
 import cors from "cors";
 
+const JWT_SECRET = process.env.JWT_SECRET_KEY || "";
 const app: Express = express();
 
 app.use(cors());
